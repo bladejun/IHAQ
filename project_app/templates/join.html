@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>IHAQ_join</title>
+	<link rel="stylesheet" href="main.css">
+	<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		function showPassword() {
+		    var x = document.getElementById("user_re_psw");
+			    if (x.type === "password") {
+			        x.type = "text";
+			    } else {
+			        x.type = "password";
+			    }
+		}
+
+		var id_validation = 'false';
+		var psw_validation = 'false';
+
+		function check_psw(){
+			var psw = $("#user_psw").val();
+			var re_psw = $("#user_re_psw").val();
+
+			if(psw == re_psw){
+				$("#psw_check_result").html("PASS");
+				$("#psw_check_result").css({
+					'color' : 'green',
+				});
+				psw_validation = 'true';
+			}
+			else{
+				$("#psw_check_result").html("Not correct");
+				$("#psw_check_result").css({
+					'color': 'red',
+				});
+				psw_validation = 'false';
+			}
+		}
+
+		function check_id(){
+			var user_id = $("#user_id").val();
+
+			$.ajax({
+				
+				url : '/check_id/',
+				data : {
+					'user_id' : user_id
+				},
+				dataType: 'json',
+			
+				success: function (response_result){
+					//alert(response_result.result);
+					
+					if(response_result.result == 'true'){
+						alert("Please Rewrite ID");
+						$("#id_check_result").html("중복");
+						$("#id_check_result").css({
+							'color' : 'red',
+						});
+						id_validation = 'false';
+					}
+					else if(response_result.result == 'false'){
+						alert("ID Validation Success");
+						$("#id_check_result").html("사용가능");
+						$("#id_check_result").css({
+							'color' : 'green',
+						});
+						id_validation = 'true';
+					}
+					
+				}
+			});
+		}
+
+		function check_submit(){
+			if(id_validation == 'true' && psw_validation == 'true'){
+				var form = document.frm;
+				form.action = "../main/";
+				form.submit();
+			}
+			else if(id_validation == 'false' && psw_validation == 'true'){
+				alert("아이디를 확인해주세요.");
+			}
+			else if(id_validation == 'true' && psw_validation == 'false'){
+				alert("비밀번호를 확인해주세요.");
+			}
+			else{
+				alert("아이디, 비밀번호를 확인해주세요");
+			}
+		}
+
+	</script>
+</head>
+<body>
+	<div id="join_page">
+		<!-- 로고는 다른 글씨체를 사용해야 해서 직접 font 태그로 설정  -->
+	<form method="post" name = "frm">
+			<h2>회원가입</h2>
+				{% csrf_token%}
+		    	<p>이름 : <input type="text" id="user_name" name = "user_name" autofocus></p>
+		       	<p>아이디 : <input type = "text" id = "user_id" name = "user_id">
+				<button type = "button" onclick="check_id();">중복확인</button></p>
+				<p id="id_check_result"></p>
+				<p>비밀번호 : <input type = "password" id = "user_psw" name = "user_psw" placeholder=" 영문, 숫자 조합 6자 이상"></p>
+				<p>비밀번호 확인 : <input type = "password" id ="user_re_psw" onchange="check_psw();">
+				<p id = "psw_check_result"></p>
+
+				<input type="checkbox" onclick="showPassword()"><font size="1.9">비밀번호 보기</font></p>
+				<p>E-mail : <input type="text" id="user_email" name = "user_email"></p>
+
+				<button type="button" onclick="check_submit();">확인</button>
+				<button type="reset">취소</button>
+			</div>
+		</form>
+	</div>
+	
+	<!-- BackStretch는 image를 어떤 사이즈여도 full screen에 맞춰줌 -->
+	
+	<!--
+ 	<script>
+ 		$.backstretch("img/background.png");
+ 	</script>
+ 	-->
+</body>
+</html>

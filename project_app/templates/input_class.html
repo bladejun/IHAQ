@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+
+
+	<style type="text/css">
+		.input_class_div{
+			width: 40%;
+			height: 40%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			background-color: yellow;
+		}
+	</style>
+	<script type="text/javascript">
+		function join_class(){
+			var class_id = $("#class_id").val();
+
+			$.ajax({
+	          url: '/check_class/',
+	          data: {
+	          	  'class_id' : class_id,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	//alert(data.result);
+	          	if(data.result == 'success'){
+	          		var addr = '../joinClass/' + class_id;
+	          		window.location.href = addr;
+	          	}
+	          	else {
+	          		alert("존재하지 않는 클래스코드 입니다.");
+	          	}
+	          }
+	        });
+		}
+	</script>
+</head>
+<body>
+	<div class="input_class_div">
+		<input type="text" id="class_id" style="width: 10vw; height: 5vw;">
+		<button type="button" style="width: 5vw; height: 5vw;" onclick="join_class();">접속</button>
+	</div>
+</body>
+</html>

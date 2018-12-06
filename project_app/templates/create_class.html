@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+
+	<script type="text/javascript">
+		function create_class(){
+			var class_name = $("#class_name").val();
+			var class_code = "#A";
+
+	        $.ajax({
+	          url: '/create_class/',
+	          data: {
+	          	  'class_name' : class_name,
+	          	  'class_code' : class_code,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	alert("success");
+	          }
+	        });
+		}
+	</script>
+</head>
+<body>
+	<input type="text" id="class_name" style="width: 10%; height: 30px;">
+	<button type="button" style="width: 100px; height: 50px;" onclick="create_class();">클래스 생성</button>
+</body>
+</html>

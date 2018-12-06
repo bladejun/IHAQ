@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>클래스 업로드</title>
+	<link rel="stylesheet" type="text/css" href="/static/semantic/semantic.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style type="text/css">
+		#class_div{
+			width:350px;
+			height:500px;
+			position:absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow:0px -1px 30px 2px #999;
+			border-radius:10px;
+			z-index: 9999;
+			background-color: white;
+		}
+		#class_header{
+			width:350px;
+			height:120px;
+			text-align:center;
+			padding:48px 50px 10px 50px;
+			font-size:1.5em;
+		}
+		#class_section{
+			width:350px;
+			height:300px;
+			padding:0 0 0 40px;
+		}
+		#class_footer{
+			width:350px;
+			height:80px;
+			text-align:center;
+			font-size: 1.2em;
+		}
+		#class_name_section,#class_code_section, #class_image_section, #class_button_section{
+			width:280px;
+			height:60px;
+		}
+		#btn{
+			height:38px;
+		}
+		#id_class_id{
+			width:225px;
+		}
+		#btn1{
+			width:280px;
+			font-weight: bold;
+			border-radius:5px;
+		}
+</style>
+<script type="text/javascript">
+		//할당 버튼을 누르면 클래스 고유 번호 임의로 할당
+		function allocate() {
+			var id = "";
+			for(var i = 0; i < 8; i++) {
+				var ran = randomRange(1, 2);
+				switch(ran) {
+				case 1: id += randomRange(0, 9); break;
+				case 2: id += String.fromCharCode(randomRange(65,90)); break;
+				}
+			}
+			document.getElementById("id_class_id").value = id;
+		}
+
+		//랜덤 번호 생성
+		function randomRange(n1, n2) {
+			 return Math.floor((Math.random() * (n2 - n1 + 1)) + n1);
+		}
+
+
+</script>
+</head>
+<body>
+<div id="class_div">
+		<div id="class_header">
+			<b>클래스 개설</b>
+		</div>
+		<div id="class_section">
+			<form class="ui form" method="post" enctype="multipart/form-data"> 
+				{% csrf_token %}
+				<div class="field" id="class_image_section">
+					<span>
+						<input type="file" name="image" accept="image/*" id="id_image">
+					</span>
+				</div>
+				<div class="field" id="class_name_section">
+					<span>
+						<input type="text" name="class_name" maxlength="10" required id="id_class_name" placeholder="클래스 이름">
+					</span>
+				</div>
+				<div class="field" id="class_code_section">
+					<span id="span">
+						<input type="text" name="class_id" maxlength="10" required id="id_class_id" placeholder="클래스 코드">
+					</span>
+					<button class="btn btn-danger" id="btn" onclick="allocate();">
+						할당
+					</button>
+				</div>
+				<div  id="class_button_section" >
+					<button class="btn btn-default" id="btn1" type="submit">
+						클래스 생성
+					</button>
+				</div>
+				<input type="hidden" name="founder_id" maxlength="10" required id="id_founder_id" value="{{ myself.get.user_id }}">
+				<input type="hidden" name="founder_name" maxlength="10" required id="id_founder_name" value="{{ myself.get.user_name }}">
+			</form>
+		</div>
+		<div id="class_footer">
+			<a href="#">사용방법이 궁금하신가요?</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/semantic/semantic.css">
+	<title>iHAQ | main page</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="/static/semantic/semantic.js"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<style type="text/css">
+		.top{
+			width: 100%;
+			height: 5vw;
+			position: fixed; 
+			top: 0;
+			z-index: 9998;
+		}
+		.top_login_div{
+			width: 20vw;
+			height: 80%;
+			position: right;
+			margin-top: 0.5%;
+			float: right;
+		}
+		.top_login_member_div{
+			width: 50vw;
+			height: 80%;
+			position: right;
+			margin-top: 0.5%;
+			float: right;
+		}		
+		.mid{
+			width: 20vw;
+			height: 20vw;
+		}
+		.mid_title{
+			width: 70vw;
+			height: 30vw;
+			position: fixed;
+			padding-top: 13vw;
+			padding-left: 10vw;
+			color: white;
+			font-size: 9vw;
+		}
+		.mid_explain{
+			width: 70vw;
+			height: 40vw;
+			position: fixed;
+			padding-left: 10vw;
+			line-height: 2em;
+			top: 30vw;
+			color: white;
+			font-size: 1.5vw;
+		}
+		.join_input{
+			width: 30vw;
+			height: 3vw;
+			position: fixed;
+			opacity: 0.7;
+			float: right;
+			margin-top: 6vw;
+			margin-right: 10vw;
+			padding-left: 2vw;
+			border: 2vw; 
+			border-radius: 2vw;
+			right: 0.6vw;
+			background-color: white;
+		}
+		.join_input_inner{
+			width: 30vw;
+			height: 3vw;
+			opacity: 0.7;
+			float: right;
+			margin-top: 6vw;
+			margin-right: 10vw;
+			padding-left: 2vw;
+			border: 2vw; 
+			border-radius: 2vw;
+			background-color: white;
+		}
+		.class_id{
+			width: 70%; 
+			height: 5vw; 
+			float: left;
+			margin-right: 5%; 
+			border: 3vw; 
+			border-radius: 5vw;
+			font-size: 5vw; 
+		}
+		.join_button{
+			width: 5vw; 
+			height: 2vw; 
+			float: left;
+			font-size: 1.2vw;
+			cursor: pointer;
+			background-color: transparent;
+			border: none;
+			position: fixed;
+			top: 26.4vw;
+			right: 10.5vw;
+		}
+		.register_button, .login_button, .logout_button, .mypage_button{
+		    border: none;
+		    background-color: transparent;
+		    color: white;
+		    padding: 20px 5px 20px 5px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 20px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		    outline: 0;
+		}
+		.logout_button{
+			width: 10vw;
+			height: 1vw;
+			background-color: transparent;
+		    padding: 0vw 1vw 0.2vw 1vw;
+		    margin: 1vw 1vw; 
+			float: right;
+			position: fixed;
+			right: 13vw;
+		}
+		.mypage_button{
+			width: 14vw;
+			height: 1vw;
+			background-color: transparent;
+		    padding: 0vw 1vw 0.2vw 1vw;
+		    margin: 1vw 1vw; 
+			float: right;
+			position: fixed;
+			right: 2vw;
+		}
+
+		.top_hello_div{
+			border: none;
+		    background-color: transparent;
+		    color: white;
+		    padding: 0vw 1vw 0.2vw 1vw;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 1.5vw;
+		    margin: 1vw 1vw; 
+		    outline: 0;
+		    width: 20vw; 
+		    height: 1vw; 
+		    float: right;
+		    position: fixed;
+			right: 20vw;
+		}
+
+		.create_new_class{
+			position: fixed;
+			top: 30vw;
+			right: 10.5vw;
+			background-color: transparent;
+		}
+
+		.create_new_class_button{
+			background-color: transparent;
+			border: none;
+			color: white;
+			cursor: pointer;
+		}
+
+		.button{
+			border: 0;
+			outline: 0;
+		}
+
+		.vanish{
+			float:right; 
+			border:0px; 
+			margin-right: 10px;
+			cursor: pointer;
+		}
+
+		input{
+			all: unset;
+		}
+		#login_div{
+			width: 25%;
+			height: 80%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: 0px -1px 30px 2px #999;
+			border-radius: 8px;
+			z-index: 9999;
+			background-color: white;
+		}
+		#class_div{
+			width:350px;
+			height:470px;
+			position:absolute;
+			top: 25vw;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow:0px -1px 30px 2px #999;
+			border-radius:8px;
+			z-index: 9999;
+			background-color: white;
+		}
+		#join_div{
+			width:350px;
+			height:470px;
+			position:absolute;
+			top: 25vw;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow:0px -1px 30px 2px #999;
+			border-radius:8px;
+			z-index: 9999;
+			background-color: white;
+		}
+		#login_header, #class_header, #join_header{
+			width:100%;
+			height:20%;
+			text-align:center;
+			padding:5vw 1vw 1vw 1vw;
+			font-size:1.5em;
+		}
+/*		#join_header{
+			width: 100%;
+			height: 5vw;
+			text-align: center;
+			font-size: 1.5em;
+		}*/
+		#login_section1, #class_section1, #join_section1{
+			width:100%;
+			height:30%;
+		}
+		#login_section2{
+			width:100%;
+			height:20%;
+		}
+		#class_section2{
+			width:350px;
+			height:80px;
+		}
+		#join_section2{
+			width:350px;
+			height:80px;
+			bottom: 2vw;
+		}
+		#login_footer, #class_footer, #join_footer{
+			width:100%;
+			height:10%;
+			padding-top: 2vw;
+			text-align: center;
+		}
+		#login_id_section, #login_pwd_section, #class_name_section, #class_code_section{
+			/*height:95px;
+			margin:0 0 0 42px;
+			padding:10px 0 0 0;*/
+		}
+		span{
+			border-bottom:2px solid gray;
+			width:100px;
+			height:80px;
+			padding:0 0 5px 0;
+		}
+		A:link{text-decoration:none; color:black} /* 링크 상태일 때 스타일 */
+		A:visited{text-decoration:none; color:gray} /* 방문했을 때 스타일 */
+		A:hover{text-decoration:underline; color:blue} /* 마우스 오버시 스타일 */
+		A:active{text-decoration:none; color:red} /* 마우스를 누른 상태일 때 스타일 */
+		input{
+			border:0px;
+		}
+		#id{
+			width:200px;
+		}
+		#pwd, #className, #classCode{
+			width:185px;
+		}
+
+	</style>
+	<script type="text/javascript">
+		function join_class(){
+			var class_id = $("#class_id").val();
+
+			$.ajax({
+	          url: '/check_class/',
+	          data: {
+	          	  'class_id' : class_id,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	//alert(data.result);
+	          	if(data.result == 'success'){
+	          		var addr = '../joinClass/' + class_id;
+	          		window.location.href = addr;
+	          	}
+	          	else {
+	          		alert("존재하지 않는 클래스코드 입니다.");
+	          	}
+	          }
+	        });
+		}
+
+		function login(){
+			var id = $("#id").val();
+			var psw = $("#pwd").val();
+
+			$.ajax({
+	          url: '/check_login/',
+	          data: {
+	          	  'id' : id,
+	          	  'psw' : psw,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	//alert(data.result);
+	          	if(data.result == 'success'){
+	          		window.location.href = '../login/';
+	          	}
+	          	else if(data.result == 'id_failed'){
+	          		alert("존재하지 않는 ID 입니다.");
+	          	}
+	          	else if(data.result == 'psw_failed'){
+	          		alert("PSW가 틀렸습니다.");
+	          	}
+	          }
+	        });
+		}
+
+		function showPassword() {
+		    var x = document.getElementById("user_re_psw");
+			    if (x.type === "password") {
+			        x.type = "text";
+			    } else {
+			        x.type = "password";
+			    }
+		}
+
+		var id_validation = 'false';
+		var psw_validation = 'false';
+
+		function check_psw(){
+			var psw = $("#user_psw").val();
+			var re_psw = $("#user_re_psw").val();
+
+			if(psw == re_psw){
+				$("#psw_check_result").html("PASS");
+				$("#psw_check_result").css({
+					'color' : 'green',
+				});
+				psw_validation = 'true';
+			}
+			else{
+				$("#psw_check_result").html("Not correct");
+				$("#psw_check_result").css({
+					'color': 'red',
+				});
+				psw_validation = 'false';
+			}
+		}
+
+		function check_id(){
+			var user_id = $("#user_id").val();
+
+			$.ajax({
+				
+				url : '/check_id/',
+				data : {
+					'user_id' : user_id
+				},
+				dataType: 'json',
+			
+				success: function (response_result){
+					//alert(response_result.result);
+					
+					if(response_result.result == 'true'){
+						alert("Please Rewrite ID");
+						$("#id_check_result").html("중복");
+						$("#id_check_result").css({
+							'color' : 'red',
+						});
+						id_validation = 'false';
+					}
+					else if(response_result.result == 'false'){
+						alert("ID Validation Success");
+						$("#id_check_result").html("사용가능");
+						$("#id_check_result").css({
+							'color' : 'green',
+						});
+						id_validation = 'true';
+					}
+					
+				}
+			});
+		}
+
+		function check_submit(){
+			if(id_validation == 'true' && psw_validation == 'true'){
+				var form = document.frm;
+				form.action = "../main/";
+				form.submit();
+			}
+			else if(id_validation == 'false' && psw_validation == 'true'){
+				alert("아이디를 확인해주세요.");
+			}
+			else if(id_validation == 'true' && psw_validation == 'false'){
+				alert("비밀번호를 확인해주세요.");
+			}
+			else{
+				alert("아이디, 비밀번호를 확인해주세요");
+			}
+		}
+	</script>
+
+	<script type="text/javascript">
+		//아이디, 비밀번호 입력 여부 체크
+		function loginCheck() {
+			if(document.f1.id.value == "") {
+				alert("아이디를 입력해주세요!");
+			}
+			else if(document.f1.pwd.value == "") {
+				alert("비밀번호를 입력해주세요!");
+			}
+			else {
+				document.f1.submit();
+			}
+		}
+		//클래스 이름, 클래스 코드 입력 여부 체크
+		function classCheck() {
+			if(document.f2.className.value == "") {
+				alert("클래스 이름을 입력해주세요!");
+			}
+			else if(document.f2.classCode.value == "") {
+				alert("클래스 코드를 입력해주세요!");
+			}
+			else {
+				document.f2.submit();
+			}
+		}
+		//로그인 버튼 누르면 창이 활성화
+		function loginShow() {
+			$("#login_div").css("display","block");
+			$("#join_div").css("display", "none");
+		}
+		//x버튼 누르면 창 사라짐
+		function loginVanish() {
+			$("#login_div").css("display", "none");
+		}
+		//회원가입 버튼 누르면 창이 활성화
+		function joinShow() {
+			$("#join_div").css("display","block");
+			$("#login_div").css("display", "none");
+			$("#class_div").css("display", "none");
+		}
+		//x버튼 누르면 창 사라짐
+		function joinVanish() {
+			$("#join_div").css("display", "none");
+		}
+
+		function go_classpage(){
+			window.location.href = "../upload";
+		}
+
+		function go_mypage(){
+			window.location.href = "../mypage";
+		}
+	</script>
+
+</head>
+
+<body style="width: 100%; height: 5vw; margin: 0; background-image: url('../../static/img/main_image.png'); background-size: 100%;">
+	<div class="top">
+		{% if member.user_id == 'unknown' %}
+			<div class="top_login_div">
+				<button class="login_button" style="width: 8vw; height: 110%;" onclick="loginShow();"> 로그인 </button>
+				<button class="register_button" style="width: 8vw; height: 110%;" onclick="joinShow();"> 회원가입 </button>
+			</div>
+		{% else %}
+			<div class="top_login_member_div" style="margin-right: 1px;">
+				<div class="top_hello_div">
+					{{member.user_name}}님 안녕하세요!
+				</div>
+				<button class="logout_button" onclick="location.href = '/logout/';"> 로그아웃 </button>
+				<button class="mypage_button" onclick="go_mypage();"> 마이페이지 </button>
+			</div>
+			<div class="create_new_class">
+				<button class="create_new_class_button" onclick="go_classpage();"> 새 클래스 생성 </button>
+			</div>
+		{% endif %}
+	</div>
+
+	<div class="mid">
+		<div class="mid_title">
+			<b>iHAQ</b>
+		</div>
+		<div class="mid_explain">
+			iHAQ은 당신의 프레젠테이션을 더 원활하게 만들어줍니다. <br>
+			새로워진 소통형 프레젠테이션을 경험해보세요.
+		</div>
+	</div>
+
+	<div class="join_input">
+		<input id="class_id" type="text" placeholder="">
+		<button class="join_button" type="button" onclick="join_class();">검색</button>
+	</div>
+
+
+	<div id="login_div" style="display:none;">
+		<input type="button" value="x" class="vanish" onclick="loginVanish();"/>
+		<div id="login_header">
+			<b>로그인</b>
+		</div>
+		<div id="login_section1">
+			<form action="" method="post" name="f1" style="width: 100%; height: 60%">
+				<div class="id_input" style="width: 100%; padding-left: 10%; padding-top: 12%;">
+					<input class="border-bottom" type="text" name="id" id="id" maxlength="10" placeholder=" 아이디" style="width: 90%;">
+				</div>
+				<div class="pw_input" style="width: 100%; padding-left: 10%; padding-top: 12%;">
+					<input class="border-bottom" type="password" name="pwd" id="pwd" maxlength="10" placeholder=" 비밀번호" style="width: 90%">
+				</div>
+			</form>	
+		</div>
+		<div id="login_section2">
+				<button class="btn btn-default" style="width:80%; margin-left: 10%; margin-top: 5%;" onclick="login();">로그인</button>
+				<button class="btn btn-default" style="width:80%; margin-left: 10%; margin-top: 5%; background-color: darkgrey;" onclick="joinShow();">회원가입</button>
+		</div>
+		<div id="login_footer">
+			<a href="../../password-change/" style="color:grey;">비밀번호를 잊어버리셨나요?</a>
+		</div>
+	</div>
+
+	<div id="join_div" style="display: none;">
+		<input type="button" value="x" class="vanish" onclick="joinVanish();"/>
+		<div id=join_header>
+			<b>회원가입</b>
+		</div>
+		<div id="join_section1">
+			<form class="ui form" method="post" name="frm">
+			{% csrf_token %}
+				<div class="field" id="user_name_section" style="width: 19vw; padding-left: 2vw;">
+					<span><input type="text" id="user_name" name="user_name" placeholder="이름" autofocus></span>
+				</div>
+				<div class="field" id="user_id_section" style="width: 19vw; padding-left: 2vw;">
+					<span><input type="text" id = "user_id" name = "user_id" placeholder="아이디"></span>
+					<button type="button" onclick="check_id();">중복확인</button>				
+				</div>
+				<div class="field" id="user_psw_section" style="width: 19vw; padding-left: 2vw;">
+					<span><input type="password" id = "user_psw" name = "user_psw" placeholder="비밀번호 (영문, 숫자 조합 6자 이상)"></span>
+				</div>
+				<div class="field" id="user_re_psw_section" style="width: 19vw; padding-left: 2vw;">
+					<span><input type="password" id = "user_re_psw" name = "user_re_psw" placeholder="비밀번호 확인" onchange="check_psw"></span>
+					<div id="psw_check_result"></div>
+				</div>
+				<div class="field" id="user_email_section" style="width: 19vw; padding-left: 2vw;">
+					<span><input type="text" id="user_email" name="user_email" placeholder="E-mail"></span>
+				</div>
+			</form>
+		</div>
+		<div id="join_section2">
+			<button class="btn btn-default" style="width:260px;" onclick="check_submit();">확인</button>
+		</div>
+	</div>
+
+	<div id="findpw_div" style="display: none;">
+		<input type="button" value="x" class="vanish" onclick="findpwVanish();"/>
+		<div id=findpw_header>
+			<b>비밀번호 찾기</b>
+
+</body>
+</html>

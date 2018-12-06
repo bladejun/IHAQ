@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>마이 페이지</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style type="text/css">
+	A:link{text-decoration:none; color:black;} 
+	A:visited{text-decoration:none; color:black;} 
+	A:hover{text-decoration:none; color:black;}
+	A:active{text-decoration:none; color:black;} 
+	#mainDiv{
+		width:96%;
+		height:100%;
+		padding:2vw 0 0 2vw;
+	}
+	#header{
+		width:100%;
+		height:40px;
+	}
+	#logo, #header{
+		float:left;
+	}
+	#logo{
+		width:14%;
+		height:40px;
+		text-align: center;
+		font-size:2em;
+		overflow: hidden;
+	}
+	#logo > span{
+		color:blue;
+	}
+	#bar{
+		background-color:#03003F;
+		height:30px;
+		margin:1.2vh 0 0 12vw;
+	}
+	#center{
+		width:100%;
+		height:96%;
+	}
+	#leftDiv, #rightDiv{
+		float:left;
+	}
+	#leftDiv{
+		width:25%;
+		height:100%;
+	}
+	#myself{
+		width:60%;
+		height:40%;
+		text-align:center;
+		font-size:1.2em;
+		font-weight:bold;
+		padding:0;
+	}
+	#list{
+		width:24%;
+		height:52%;
+		overflow:hidden;
+		position:absolute;
+	}
+	ul{
+        list-style-type: none;
+        padding:0;
+        margin:0 0 28vh 0;
+        align:center;
+    }
+   	li{
+		margin:0;
+		padding:10px 0 10px 40px;
+		list-style:none;
+		background-image:none;
+		background-repeat:no-repeat;
+		background-position:left center;
+		background-size:7px;
+		font-weight:bold;
+		font-size:1.2em;
+		opacity:0.47;
+	}
+	li:nth-child(1){
+		background-image:url('../../static/img/bar.png');
+		opacity:1;
+	}
+	#list > span{
+		font-size:1.2em;
+	}
+	#rightDiv{
+		width:75%;
+		height:100%;
+	}
+	#show1 ,#show2{
+		width:100%;
+		height:62%;
+	}
+	#top_show1, #top_show2{
+		width:100%;
+		height:15%;
+		font-size:1.5em;
+		font-weight:bold;
+		padding:5vh 0 0 0;
+	}
+	#middle_show1, #middle_show2{
+		width:90%;
+		height:70%;
+	}
+	#left_show1, #right_show1, #left_show2, #right_show2{
+		float:left;
+		width:45%;
+		height:100%;
+		border:1px solid black;
+	}
+	#right_show1, #right_show2{
+		margin:0 0 0 5vw;
+	}
+	#left_show1 > img, #left_show2 > img, #right_show1 > img, #right_show2 > img {
+		width:100%;
+		height:100%;
+	}
+	#history{
+		width:100%;
+		height:35%;
+	}
+	#top_history{
+		font-weight:bold;
+		font-size:1.5em;
+		width:100%;
+		height:20%;
+	}
+	#bottom_history1, #bottom_history2{
+		width:95%;
+		height:50%;
+	}	
+	#bottom_history1 > span, #bottom_history2 > span{
+		background-color:#1D1A2D;
+		color:white;
+		display:inline-block;
+		width:18%;
+		height:25%;
+		text-align:left;
+		padding:3px 3px;
+		margin:0;
+		float:left;
+	}
+	#class_name{
+		background-color: gray;
+		color:black;
+		float:left;
+		width:45%;
+		height:28%;
+		margin:0 0 0 0.5vw;
+		font-weight:bold;
+		padding:3px 0 0 7px;
+	}
+	#date{
+		float:left;
+		width:29%;
+		height:28%;
+		margin:0 0 0 0.5vw;
+		font-weight:bold;
+		border:1px solid black;
+		padding:3px 0 0 7px;
+	}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$("#menu > #l1").on({
+				click:function(){
+					$(this).css("background-image", "url('../../static/img/bar.png')");
+					$("#l1").css("opacity", "1");
+					$("#l2").css("opacity", "0.47").css("background-image", "none");
+					$("#l3").css("opacity", "0.47").css("background-image", "none");
+					$("#l4").css("opacity", "0.47").css("background-image", "none");
+					$("#show1").css("display", "block");
+					$("#show2").css("display", "none");
+					$("#top_history").css("display", "block");
+					$("#hr").css("display", "block");
+					$("#bottom_history1").css("display", "block");
+					$("#bottom_history2").css("display", "none");
+					}
+			});
+		
+			$("#menu > #l2").on({
+				click:function(){
+					$(this).css("background-image", "url('../../static/img/bar.png')");
+					$("#l1").css("opacity", "0.47").css("background-image", "none");
+					$("#l2").css("opacity", "1");
+					$("#l3").css("opacity", "0.47").css("background-image", "none");
+					$("#l4").css("opacity", "0.47").css("background-image", "none");
+					$("#show1").css("display", "none");
+					$("#show2").css("display", "block");
+					$("#top_history").css("display", "block");
+					$("#hr").css("display", "block");
+					$("#bottom_history1").css("display", "none");
+					$("#bottom_history2").css("display", "block");
+				}
+			});
+			
+			$("#menu > #l3").on({
+				click:function(){
+					$(this).css("background-image", "url('../../static/img/bar.png')");
+					$("#l1").css("opacity", "0.47").css("background-image", "none");
+					$("#l2").css("opacity", "0.47").css("background-image", "none");
+					$("#l3").css("opacity", "1");
+					$("#l4").css("opacity", "0.47").css("background-image", "none");
+					$("#show1").css("display", "none");
+					$("#show2").css("display", "none");
+					$("#top_history").css("display", "none");
+					$("#hr").css("display", "none");
+					$("#bottom_history1").css("display", "none");
+					$("#bottom_history2").css("display", "none");
+				}
+			});
+
+			$("#menu > #l4").on({
+				click:function(){
+					$(this).css("background-image", "url('../../static/img/bar.png')");
+					$("#l1").css("opacity", "0.47").css("background-image", "none");
+					$("#l2").css("opacity", "0.47").css("background-image", "none");
+					$("#l3").css("opacity", "0.47").css("background-image", "none");
+					$("#l4").css("opacity", "1");
+					$("#show1").css("display", "none");
+					$("#show2").css("display", "none");
+					$("#top_history").css("display", "none");
+					$("#hr").css("display", "none");
+					$("#bottom_history1").css("display", "none");
+					$("#bottom_history2").css("display", "none");
+				}
+			});
+		});
+	</script>
+</head>
+<body style="width:98%; height:660px;">
+	<div id="mainDiv">
+		<div id="header">
+			<div id="logo">
+				<span>i</span><a href="../">&nbspHAQ</a>
+			</div>
+			<div id="bar">
+			</div> 
+		</div>
+		<div id="center">
+			<div id="leftDiv">
+				<div id="myself">
+					<img src="../../static/img/1.jpeg" style="width:100%; height:20vh;"/>
+					{{ myself.get.user_name }}<br>
+					My page
+				</div>
+				<div id="list">
+					<ul id="menu">
+						<li id="l1">최근 클래스</li>
+						<li id="l2">최근 생성된 클래스</li>
+						<li id="l3">결제 하기</li>
+						<li id="l4">개인정보 수정</li>
+					</ul>
+					<span><a href="../../logout/">로그아웃</a></span>
+				</div>
+			</div>
+			<div id="rightDiv">
+				<div id="show1" style="display:block">
+					<div id="top_show1">
+						최근 클래스
+					</div>
+					<div id="middle_show1">
+						<div id="left_show1"><img src="{{ classimages3.get.image.url }}"/></div>
+						<div id="right_show1"><img src="{{ classimages4.get.image.url }}"/></div>
+					</div>
+				</div>
+				<div id="show2" style="display:none">
+					<div id="top_show2">
+						최근 생성된 클래스
+					</div>
+					<div id="middle_show2">
+						<div id="left_show2"><img src="{{ classimages1.get.image.url }}"/></div>
+						<div id="right_show2"><img src="{{ classimages2.get.image.url }}"/></div>
+					</div>
+				</div>
+				<hr size="3" color="black" id="hr">
+				<div id="history">
+					<div id="top_history">
+						기록
+					</div>
+					<div id="bottom_history1" style="display: block">
+						{% if classimages3.get.class_name != 'base' %}
+						<span>&nbsp&nbsp&nbsp클래스명</span>
+						<div id="class_name">{{ classimages3.get.class_name }}</div>
+						<div id="date">{{ classimages3.get.created_date }}</div>
+						<br>
+						<hr color="white">
+						{% endif %}
+						{% if classimages4.get.class_name != 'base' %}
+						<span>&nbsp&nbsp&nbsp클래스명</span>
+						<div id="class_name">{{ classimages4.get.class_name }}</div>
+						<div id="date">{{ classimages4.get.created_date }}</div>
+						<br>
+						<hr color="white">
+						{% endif %}
+					</div>
+					<div id="bottom_history2" style="display: none">
+						{% if classimages1.get.class_name != 'base' %}
+						<span>&nbsp&nbsp&nbsp클래스명</span>
+						<div id="class_name">{{ classimages1.get.class_name }}</div>
+						<div id="date">{{ classimages1.get.created_date }}</div>
+						<br>
+						<hr color="white">
+						{% endif %}
+						{% if classimages2.get.class_name != 'base' %}
+						<span>&nbsp&nbsp&nbsp클래스명</span>
+						<div id="class_name">{{ classimages2.get.class_name }}</div>
+						<div id="date">{{ classimages2.get.created_date }}</div>
+						<br>
+						<hr color="white">
+						{% endif %}
+					</div>		
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+	<title></title>
+	<style type="text/css">
+		.chat_body{
+			width: 30%;
+			height: 50%;
+			background-color: gray;
+		}
+		.best_chat{
+			width: 95%;
+			height: 25%;
+			margin-bottom: 5%;
+			background-color: orange;
+			overflow-y:scroll;
+		}
+		.chat_show{
+			width: 95%;
+			height: 60%;
+			background-color: pink;
+			overflow-y:scroll;
+		}
+		.chat_input_div{
+			width: 95%;
+			height: 10%;
+			background-color: green;
+		}
+		.chat_div{
+			width: 50%;
+			height: 4vw;
+			background-color: white;
+		}
+		.set_user_name_div{
+			width: 30%;
+			height: 5%;
+			background-color: yellow;
+		}
+	</style>
+	<script type="text/javascript">
+		var global_user_id = "";
+		var user_name = "";
+		var class_id = "";
+		var best_chat_min_ddabong = 5;
+
+	    $(document).ready(function(){
+	      updateData();
+	    });
+
+	    function updateData(){
+	    	var content_list = [];
+	    	var name_list = [];
+	    	var date_list = [];
+	    	var class_id_list = [];
+	    	var pk_list = [];
+	    	var ddabong_list = [];
+	    	var user_id_list = [];
+
+	        $.ajax({
+	          url: '/updateChat/',
+	          data: {
+	          	  
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	            //alert(data.chats);
+	            var chat = data.chats;
+	            var chat_tmp = chat;
+	            //alert(data.length);
+	            while(chat_tmp.length >0){
+		            var content_idx = chat_tmp.indexOf("content");
+		            if(content_idx == -1){
+		            	break;
+		            }
+		            var content_sub = chat_tmp.substring(content_idx+11, chat_tmp.length);
+
+		            var comma_idx = content_sub.indexOf("\"");
+		            var content = content_sub.substring(0,comma_idx);
+		            //alert(content);
+		            if(content.length > 0){
+		            	content_list.push(content);
+		            }
+		            chat_tmp = content_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var name_idx = chat_tmp.indexOf("user_name");
+		            //alert(name_idx);
+		            if(name_idx == -1){
+		            	break;
+		            }
+		            var name_sub = chat_tmp.substring(name_idx+13, chat_tmp.length);
+
+		            var comma_idx = name_sub.indexOf("\"");
+		            var name = name_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(name.length > 0){
+		            	name_list.push(name);
+		            }
+		            chat_tmp = name_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var date_idx = chat_tmp.indexOf("created_date");
+		            //alert(name_idx);
+		            if(date_idx == -1){
+		            	break;
+		            }
+		            var date_sub = chat_tmp.substring(date_idx+16, chat_tmp.length);
+
+		            var comma_idx = date_sub.indexOf("\"");
+		            var date = date_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(date.length > 0){
+		            	date_list.push(date);
+		            }
+		            chat_tmp = date_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var class_id_idx = chat_tmp.indexOf("class_id");
+		            //alert(name_idx);
+		            if(class_id_idx == -1){
+		            	break;
+		            }
+		            var class_id_sub = chat_tmp.substring(class_id_idx+12, chat_tmp.length);
+
+		            var comma_idx = class_id_sub.indexOf("\"");
+		            var class_id = class_id_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(class_id.length > 0){
+		            	class_id_list.push(class_id);
+		            }
+		            chat_tmp = class_id_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var pk_idx = chat_tmp.indexOf("chat_unique_id");
+		            //alert(name_idx);
+		            if(pk_idx == -1){
+		            	break;
+		            }
+		            var pk_sub = chat_tmp.substring(pk_idx+18, chat_tmp.length);
+
+		            var comma_idx = pk_sub.indexOf("\"");
+		            var pk = pk_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(pk.length > 0){
+		            	pk_list.push(pk);
+		            }
+		            chat_tmp = pk_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		        	//alert(chat_tmp);
+		            var ddabong_idx = chat_tmp.indexOf("ddabong");
+		            //alert(name_idx);
+		            if(ddabong_idx == -1){
+		            	break;
+		            }
+		            var ddabong_sub = chat_tmp.substring(ddabong_idx+10, chat_tmp.length);
+
+		            var comma_idx = ddabong_sub.indexOf("}");
+		            var ddabong = ddabong_sub.substring(0,comma_idx);
+		            //alert(ddabong);
+		            if(ddabong.length > 0){
+		            	ddabong_list.push(ddabong);
+		            }
+		            chat_tmp = ddabong_sub;
+		        }
+
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		        	//alert(chat_tmp);
+		            var user_id_idx = chat_tmp.indexOf("user_id");
+		            //alert(name_idx);
+		            if(user_id_idx == -1){
+		            	break;
+		            }
+		            var user_id_sub = chat_tmp.substring(user_id_idx+11, chat_tmp.length);
+
+		            var comma_idx = user_id_sub.indexOf("\"");
+		            var user_id = user_id_sub.substring(0,comma_idx);
+		            //alert(ddabong);
+		            if(user_id.length > 0){
+		            	user_id_list.push(user_id);
+		            }
+		            chat_tmp = user_id_sub;
+		        }
+
+		        //alert(user_id_list);
+
+		        var chat_content = '';
+		        var best_chat_content = '';
+		        for(var i=0;i<content_list.length;i++){
+		            var start = "<div class=\"chat_div\">";
+		            var chat_content_body = name_list[i] + " : " + content_list[i] + "<br><br>";
+		            
+		            var chat_ddabong1 = "<button type=\"button\" id=\"";
+		            var chat_ddabong_id = class_id_list[i] + "$$$" + name_list[i] + "$$$" + content_list[i] + "$$$" + date_list[i];
+		            var chat_ddabong2 = "\" style=\"width: 1vw; height:1vw;\" onclick=\"ddabong(this);\">굳</button>";
+		            var ddabong_cnt = ddabong_list[i];
+		            
+		            var chat_delete1 = "<button type=\"button\" id=\"";
+		            var chat_delete_id = class_id_list[i] + "%%%" + name_list[i] + "%%%" + content_list[i] + "%%%" + date_list[i];
+		            var chat_delete2 = "\" style=\"width: 1vw; height:1vw;\" onclick=\"delete_msg(this);\">X</button>";
+
+		            var end = "</div><hr>";
+
+		            var chat_ddabong = chat_ddabong1 + chat_ddabong_id + chat_ddabong2 + ddabong_cnt;
+		            var chat_delete = chat_delete1 + chat_delete_id + chat_delete2;
+
+		            //alert(user_id);
+
+		            // 본인 채팅에만 삭제버튼 추가
+		            if(global_user_id == user_id_list[i]){
+			            chat_content += start + chat_content_body + chat_ddabong + chat_delete + end;
+			        }
+			        else{
+			        	chat_content += start + chat_content_body + chat_ddabong + end;
+			        }
+
+			        // 좋아요 갯수 best_chat_min_ddabong 개 이상만 BEST CHAT에 등록
+			        if(ddabong_list[i] >= best_chat_min_ddabong){
+			        	if(global_user_id == user_id_list[i]){
+			            	best_chat_content += start + chat_content_body + chat_ddabong + chat_delete + end;
+				        }
+				        else{
+				        	best_chat_content += start + chat_content_body + chat_ddabong + end;
+				        }
+			        }
+		        }
+
+
+	            $("#chat_show_id").html(chat_content);
+	            $("#best_chat_id").html(best_chat_content);
+	          }
+	        });
+	        setTimeout("updateData()",1000);
+	    }
+
+	    function send_msg(){
+	    	var chat_content = $("#chat_input").val();
+	        $.ajax({
+	          url: '/sendChat/',
+	          data: {
+	          	  'user_id' : global_user_id,
+	          	  'user_name' : user_name,
+	          	  'chat_content' : chat_content,
+	          	  'class_id' : class_id,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	$("#chat_input").val("");
+	            //alert("!!!!");
+	          }
+	        });
+	    }
+
+
+
+
+	    function set_user_id(){
+	    	var user_id_tmp = $("#user_id_input").val();
+	    	global_user_id = user_id_tmp;
+	    	alert("user id ok");
+	    }
+
+	    function set_user_name(){
+	    	var user_name_tmp = $("#user_name_input").val();
+	    	user_name = user_name_tmp;
+	    	alert("user name ok");
+	    }
+
+	    function set_class_id(){
+	    	var class_id_tmp = $("#class_id_input").val();
+	    	class_id = class_id_tmp;
+	    	alert("class id ok");
+	    }
+
+
+
+
+
+
+
+	    function ddabong(btn){
+	    	//alert(btn.id);
+	    	var btn_id = btn.id;
+	    	var btn_id_split = btn_id.split("$$$");
+	    	//alert(btn_id_split);
+	    	$.ajax({
+	          url: '/ddabong/',
+	          data: {
+	          	  'class_id' : btn_id_split[0],
+	          	  'user_name' : btn_id_split[1],
+	          	  'content' : btn_id_split[2],
+	          	  'date' : btn_id_split[3]
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	$("#chat_input").val("");
+	            //alert("!!!!");
+	          }
+	        });
+	    }
+
+
+
+
+
+	    function delete_msg(btn){
+	    	var btn_id = btn.id;
+	    	var btn_id_split = btn_id.split("%%%");
+
+	    	$.ajax({
+	          url: '/delete_msg/',
+	          data: {
+	          	  'class_id' : btn_id_split[0],
+	          	  'user_name' : btn_id_split[1],
+	          	  'content' : btn_id_split[2],
+	          	  'date' : btn_id_split[3]
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	$("#chat_input").val("");
+	            //alert("!!!!");
+	          }
+	        });
+	    }
+	    
+	</script>
+</head>
+<body style="height: 1500px; background-color: black; width: 100%; margin: 0;">
+
+	<div class="chat_body">
+		<div class="best_chat" id="best_chat_id">
+		
+		</div>
+		<div class="chat_show" id="chat_show_id">
+			
+		</div>
+		<div class="chat_input_div" style="position: relative;">
+			<input type="text" id="chat_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+			<button type="button" style="width: 25%; height: 90%; float: left;" onclick="send_msg();">보내기</button>
+		</div>
+	</div>
+
+	<div class="set_user_name_div" style="position: relative;">
+		<input type="text" id="user_id_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+		<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_user_id();">ID SET</button>
+	</div>
+	<div class="set_user_name_div" style="position: relative;">
+		<input type="text" id="user_name_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+		<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_user_name();">NAME SET</button>
+	</div>
+	<div class="set_user_name_div" style="position: relative;">
+		<input type="text" id="class_id_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+		<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_class_id();">CLASS SET</button>
+	</div>
+</body>
+</html>

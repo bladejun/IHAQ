@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+	<title></title>
+	<script type="text/javascript">
+		function startFS() {
+			var element = document.getElementById("viewer_content");
+			if(element.requestFullScreen) {
+				element.requestFullScreen();
+			} else if(element.webkitRequestFullScreen ) {
+				element.webkitRequestFullScreen();
+			} else if(element.mozRequestFullScreen) {
+				element.mozRequestFullScreen();
+			} else if (element.msRequestFullscreen) {
+				element.msRequestFullscreen(); // IE
+			}
+		}
+	</script>
+	
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+	<script type="text/javascript" src="../static/js/pdfobject.js"></script>
+
+	<style type="text/css">
+		.top{
+			width: 100%;
+			height: 5vw;
+			background-color: white;
+			position: fixed;
+			top: 0;
+			z-index: 9998;
+		}
+		.top_login_div, .top_login_member_div{
+			width: 20vw;
+			height: 80%;
+			margin-top: 0.5%;
+			float: right;
+			position: relative;
+		}
+
+		.middle{
+			width: 100%; 
+			height: 90%;
+			position: absolute;
+			top: 5vw;
+		}
+
+
+		.chat_body{
+			width: 100%;
+			height: 100%;
+			background-color: #EAEAEA;
+			border: 1px solid transparent;
+   			border-radius: 10px;
+		}
+		.best_chat{
+			width: 95%;
+			height: 25%;
+			margin-bottom: 5%;
+			margin-left: 2.5%;
+			overflow-y : scroll;
+			overflow-x: hidden;
+			border: 1px solid black;
+   			border-radius: 10px;
+		}
+		.chat_show{
+			width: 95%;
+			height: 60%;
+			margin-left: 2.5%;
+			background-color: transparent;
+			overflow-y : scroll;
+			overflow-x: hidden;
+		}
+		.chat_input_div{
+			width: 95%;
+			height: 10%;
+			background-color: transparent;
+		}
+		.chat_div{
+			width: 100%;
+			height: 15%;
+			background-color: transparent;
+			border: 1px solid transparent;
+   			border-radius: 10px;
+		}
+		.chat_content_div{
+			width: 65%;
+			height: 100%;
+			margin-bottom: 0.5vw;
+			border: 1px solid transparent;
+   			border-radius: 10px;
+		}
+		.ddabong_container{
+			width : 1.5vw; 
+			height : 1.5vw; 
+			float:left;
+			color: white;
+			position: relative; 
+			text-align: center;
+			font-size: 0.5vw;
+		}
+		#send_msg_btn, #upload_button, #set_name_button{
+			background-color: #F2385A;
+		    border: none;
+		    color: white;
+		    padding: 20px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		    border-radius: 30px;
+		}
+		.set_user_name_div{
+			width: 100%;
+			height: 5%;
+			background-color: yellow;
+		}
+		.center_div{
+			width: 60%;
+			height: 50%;
+			margin-left: 5%;
+			float: left; 
+		}
+		.memo_div{
+			width: 80%;
+			height: 94%;
+			margin-top: 1%;
+			margin-bottom: 1%;
+			margin-left: 5%;
+			border: 1px solid transparent;
+   			border-radius: 10px;
+			background-color: white;
+			float: left;
+		}
+		.user_list_div{
+			position: relative;
+			width: 40%;
+			height: 90%;
+			float: right;
+			background-color: #F2385A;
+			border: 1px solid transparent;
+   			border-radius: 10px;
+		}
+		.user_list_node{
+			width: 100%;
+			height: 5%;
+			color: white;
+		}
+		input{
+			all : unset;
+		}
+	</style>
+
+
+	<style type="text/css">
+		#viewer_div{
+			width: 100%;
+			height: 30vw;
+		}
+		#viewer_content{
+			width: 100%;
+			height: 90%;
+		}
+		.pdfobject-container { 
+			height: 30rem; 
+			border: 1rem solid rgba(0,0,0,.1); 
+		}
+	</style>
+</head>
+<body style="height: 1500px; background-color: white; width: 100%; margin: 0; position: relative;">
+
+	<div id="show_user_list_div" style="width: 20%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -70%); background-color: white; z-index: 10000; box-shadow:0px -1px 30px 2px #999; border-radius: 10px; display: none;">
+		<div class="show_user_list_close" style="width: 5%; height: 5%; position: absolute; top: 0%; right: 0%; font-weight: bold;" onclick="close_show_user_list();">
+			X
+		</div>
+		<div class="show_user_list_title" style="width: 100%; height: 10%; border: 1px solid transparent; border-radius: 10px; text-align: center; font-size: 2vw; font-weight: bold; background-color: #F2385A; color: white;">
+			참여인원 리스트
+		</div>
+		<div id="show_user_list_content" style="width: 100%; height: 80%; background-color: gray;  border: 1px solid transparent; border-radius: 10px; margin-top: 10%;">
+			<!--
+			<div class="user_list_node">
+				wnstlr24(심준식)
+			</div>
+			<div class="user_list_node">
+				kk123op(심준식)
+			</div>
+			-->
+		</div>
+	</div>
+
+	<div class="top">
+		<img src="../../static/img/logo3.png" style="width: 10vw; height: 80%; float: left; margin-left: 5%; margin-top: 0.5%;">
+		<div class="top_right" style="float: right; width: 25%; height: 80%; margin-top: 1%; margin-right: 5%; position: relative;">
+			{% if member.user_id == classnode.founder_id %}
+			<div class="user_list_div" onclick="show_user_list();">
+				<div id="user_num" class="user_num" style="width: auto; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.7vw; font-weight: bold; color: white;">
+					
+				</div>
+			</div>
+			{% endif %}
+			<div class="go_home_div" style="width: 40%; height: 90%; float: right; position: relative;">
+				<div class="go_home_content" style="width: auto; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);  font-size: 1vw; font-weight: bold; color: black;" onclick="go_home();">
+					HOME
+				</div>
+			</div>
+		</div>	
+	</div>
+
+	<div class="middle">
+		<div class="class_title_div" style="width: 90%; height: 10%; margin-left: 5%; position: relative;">
+			<div class="class_title_content" style="width: auto; height: auto; font-size: 3vw; position: absolute; top: 50%; transform: translate(0%,-50%);">
+				{{classnode.class_name}}
+			</div>
+		</div>
+		<div class="center_div">
+			<div id="viewer_div">
+				<div id="viewer_content">
+
+				</div>
+			</div>
+			<!--
+			<div class="memo_div">
+				<input type="textarea" style="width: 100%; height: 100%;">
+			</div>
+			-->
+			<div class="function_div" style="width: 100%; height: 50%; background-color: white; border-top: 2px solid #D5D5D5;">
+	   			{% if member.user_id != classnode.founder_id %}
+	   			<div class="choice_function_div" style="width: 2%; height: 95%; float: left; position: relative; margin-top: 1%; background-color: white;">
+	   				<div id="choice_pdf" class="choice_pdf choice_class" style="width: 100%; height: 50%; text-align: center; border: 1px solid black; background-color: #F2385A; color: white;" onclick="change_function(this);">
+	   					<br>
+	   					<br>
+	   					P<br>
+	   					D<br>
+	   					F
+	   				</div>
+
+	   				<div id="choice_memo" class="choice_memo choice_class" style="width: 100%; height: 50%;  text-align: center; border: 1px solid black;"  onclick="change_function(this);">
+	   					<br>
+	   					<br>
+	   					M<br>
+	   					E<br>
+	   					M<br>
+	   					O
+	   				</div>
+	   			</div>
+
+				<div id="pdf_div" class="pdf_div"  style="width: 80%; height: 95%; float: left; background-color: white; border: 1px solid transparent; border-radius: 10px; margin-top: 1%; margin-left: 5%;">
+					<div class="pdf_list_div" style="width: 100%; height: 60%; background-color: white; overflow-x: hidden; overflow-y:auto;">
+						{% for pdf in pdfs %}
+							<div id="{{pdf.pdf.url}}" class="pdf_content" style="width: 100%; height: 10%; background-color: transparent; border: 1px solid transparent; border-radius: 10px;" onclick="change_pdf(this);">
+								{{pdf.pdf_name}}
+							</div>
+						{% endfor %}
+					</div>
+
+					<!--
+					<div class="upload_pdf_div">
+						<form action="" method="post" enctype="multipart/form-data" name="frm">
+							{% csrf_token %}
+					        <input type="file" id="pdfs" value="" name="upload[]" multiple>
+					        <input type="hidden" name="class_id_text" id="class_id_text" value="{{classnode.class_id}}">
+					        <button type="button" value="업로드" onclick="check_file_and_submit();">업로드</button>
+					    </form>
+					    <div id="selected_pdfs" style="font-size: 10px;">
+
+					    </div>
+					</div>
+					-->
+				</div>
+
+				{% else %}
+				<div id="pdf_div" class="pdf_div"  style="width: 80%; height: 95%; float: left; background-color: white; border: 1px solid transparent; border-radius: 10px; margin-top: 1%;">
+					<div class="pdf_list_div" style="width: 100%; height: 60%; background-color: white;">
+						{% for pdf in pdfs %}
+							<div id="{{pdf.pdf.url}}" class="pdf_content" style="width: 100%; height: 10%; background-color: transparent; border: 1px solid transparent; border-radius: 10px; position: relative;" onclick="change_pdf(this);">
+								<div class="pdf_name" style="width: 90%; height: 100%; float: left;">
+									{{pdf.pdf_name}}
+								</div>
+								<div class="delete_pdf_button" style="width: 10%; height: 100%; float: left;" onclick="delete_pdf(this);">
+									X
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+
+					<div id="upload_pdf_div" class="upload_pdf_div" style="width: 20%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -70%); background-color: white; z-index: 10000; box-shadow:0px -1px 30px 2px #999; border-radius: 10px; display: none; text-align: center;">
+						<div class="show_upload_pdf_close" style="width: 5%; height: 5%; position: absolute; top: 0%; right: 0%; font-weight: bold;" onclick="close_show_upload_pdf();">
+							X
+						</div>
+
+
+
+						<form action="" method="post" enctype="multipart/form-data" name="frm">
+							{% csrf_token %}
+					        <input type="file" id="pdfs" value="" name="upload[]" multiple>
+					        <input type="hidden" name="class_id_text" id="class_id_text" value="{{classnode.class_id}}">
+					    </form>
+
+					    <div class="show_pdf_list_title" style="width: 100%; height: 10%; border: 1px solid transparent; border-radius: 10px; text-align: center; font-size: 2vw; font-weight: bold; background-color: #F2385A; color: white;">
+							선택된 파일 리스트
+						</div>
+					    <div id="selected_pdfs" style="width: 100%; height: 60%; background-color: gray;  border: 1px solid transparent; border-radius: 10px; margin-top: 10%;">
+
+					    </div>
+					    <button id="upload_button" type="button" value="업로드" style="width: 6vw; height: 3vw;" onclick="check_file_and_submit();">업로드</button>
+					</div>
+				</div>
+				{% endif %}
+
+
+				<div id="memo_div" class="memo_div" style="display: none;">
+					<div class="memo_title" style="width: 100%; height: 15%; font-size: 2vw; margin-bottom: 5%;">
+						MEMO
+					</div>
+					<!--
+					<input type="textarea" style="width: 100%; height: 85%;">
+					-->
+					<div id="memo" style="width: 100%; height: 60%; overflow: scroll;">
+						<textarea cols="150" rows="100" id="t1" style="resize:none; overflow-x:auto; overflow-y:auto" wrap="hard" >{{memo.memo}}</textarea>
+					</div>
+					<div style="width: 50%; height: 10%;" id="memo_edit"></div>
+					<button type="button" style="width: 3vw; height: 2vw; float: left; margin-left: 5%;" onclick="save_memo();">저장</button>
+				</div>
+
+				<div class="add_or_full_div" style="width: 10%; height: 100%; float: right;">
+					<img src="../static/img/full_screen_icon.png" style="width: 2vw; height: 2vw; float: right;" onclick="startFS();">
+					{% if member.user_id == classnode.founder_id %}
+					<img src="../static/img/pdf_plus_icon.png" style="width: 2vw; height: 2vw; float: right; margin-right: 10%;" onclick="open_upload_pdf();">
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<div class="chat_div" style="width: 25%; height: 60%; float: left; margin-left: 5%; border: 1px solid transparent;
+	   border-radius: 10px;">
+			
+			<div class="chat_body">
+				
+				<div class="best_chat" id="best_chat_id">
+				
+				</div>
+				
+				<div class="chat_show" id="chat_show_id">
+					
+				</div>
+				<div class="chat_input_div" style="position: relative; margin-top: 5%;">
+					{% if member.user_name == 'unknown' %}
+						<input type="text" id="chat_input" style="width: 16vw; height: 3vw; background-color: white; float: left; border: 1px solid transparent; border-radius: 10px; margin-right: 5%; margin-left: 2%; margin-top: 0.5%;" disabled="true" placeholder="닉네임을 설정해주세요.">
+						<button id="send_msg_btn" type="button" style="width: 5vw; height: 3vw; float: left;" onclick="open_set_name();">SET NAME</button>
+					{% else %}
+						<input type="text" id="chat_input" style="width: 16vw; height: 3vw; background-color: white; float: left; border: 1px solid transparent; border-radius: 10px; margin-right: 5%; margin-left: 2%; margin-top: 0.5%;">
+						<button id="send_msg_btn" type="button" style="width: 5vw; height: 3vw; float: left;" onclick="send_msg();">보내기</button>
+					{% endif %}
+				</div>
+			</div>
+
+			<!--
+			<div class="set_user_name_div" style="position: relative;">
+				<input type="text" id="user_id_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+				<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_user_id();">ID SET</button>
+			</div>
+
+			<div class="set_user_name_div" style="position: relative;">
+				<input type="text" id="user_name_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+				<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_user_name();">NAME SET</button>
+			</div>
+
+			<div class="set_user_name_div" style="position: relative;">
+				<input type="text" id="class_id_input" style="width: 70%; height: 90%; background-color: white; float: left;">
+				<button type="button" style="width: 25%; height: 90%; float: left;" onclick="set_class_id();">CLASS SET</button>
+			</div>
+			-->
+		</div>
+	</div>
+
+
+	<div id="set_name_div" style="width: 20%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -70%); background-color: white; z-index: 10000; box-shadow:0px -1px 30px 2px #999; border-radius: 10px; display: none; text-align: center;">
+		<div class="set_name_close" style="width: 5%; height: 5%; position: absolute; top: 0%; right: 0%; font-weight: bold;" 
+		onclick="close_set_name();">X
+		</div>
+
+		<div class="check_set_name_input" style="width: 100%; height: 50%; position: relative; margin-top: 40%; text-align: center;">
+			<input type="text" id="set_name_input" style="width: 60%; height: 20%; border: 1px solid black;">
+			<img src="../static/img/check_icon.png" style="width: 2vw; height: 2vw;" onclick="check_set_name();">
+			<div id="result_check_set_name" style="width: 100%; text-align: center;"></div>
+		</div>
+		<button id="set_name_button" type="button" style="width: 6vw; height: 3vw; background-color: gray;" disabled="true" onclick="start_chat();">채팅시작</button>
+	</div>
+
+	<input type="text" id="global_user_id_value" value="{{member.user_id}}" hidden="hidden">
+	<input type="text" id="user_name_value" value="{{member.user_name}}" hidden="hidden">
+	<input type="text" id="founder_id_value" value="{{classnode.founder_id}}" hidden="hidden">
+	<input type="text" id="class_name_value" value="{{classnode.class_name}}" hidden="hidden">
+
+	<script>
+		//Be sure your document contains an element with the CSS selector "test_div"
+		PDFObject.embed("", "#viewer_content");
+	</script>
+	<script type="text/javascript">
+		var href_split = window.location.href.split('/');
+		//alert(window.location.href.split('/')[window.location.href.split('/').length-1]);
+
+		var global_user_id = $("#global_user_id_value").val();
+		var user_name = $("#user_name_value").val();
+		var global_class_id = href_split[href_split.length-1];
+		var best_chat_min_ddabong = 5;
+		var upload_ok = 'true';
+		var founder_id = $("#founder_id_value").val();
+		var class_name = $("#class_name_value").val();
+
+		var check_ddabong = [];
+
+		var check_ddabong_list_push = 0;
+
+		//alert(global_user_id);
+		//alert(user_name);
+
+		var _wasPageCleanedUp = false;
+		function pageCleanup()
+		{
+		    if (!_wasPageCleanedUp)
+		    {
+		        $.ajax({
+		            type: 'GET',
+		            async: false,
+		            url: '/delete_user_list/',
+		            data: {
+		          	  'class_id' : global_class_id,
+		          	  'user_id' : global_user_id,
+		          	  'user_name' : user_name
+		          	},
+		            success: function ()
+		            {
+		                _wasPageCleanedUp = true;
+		            }
+		        });
+		    }
+		}
+
+
+		$(window).on('beforeunload', function ()
+		{
+		    //this will work only for Chrome
+		    pageCleanup();
+		});
+
+		$(window).on("unload", function ()
+		{
+		    //this will work for other browsers
+		    pageCleanup();
+		});
+
+	    $(document).ready(function(){
+
+	      	updateData();
+
+	      	$("#pdfs").change(function () {
+	        	//alert(document.getElementById('pdfs').files.length);
+	        	var file_length = document.getElementById('pdfs').files.length;
+	        	var file_list = '';
+	        	var is_not_pdf_file = 'false';
+	        	for(var i=0;i<file_length;i++){
+	                var pdfs = document.getElementById('pdfs').files[i].name;
+	                //alert(pdfs.split('.')[pdfs.split('.').length-1]);
+	                var file_format = pdfs.split('.')[pdfs.split('.').length-1];
+	                var color = 'black';
+	                if(file_format != 'pdf'){
+		                color = 'red';
+		                is_not_pdf_file = 'true';
+		            }
+		            file_list += "<p style=\"color:" + color + ";\">" + (i+1) + " : " + pdfs + '<br>';
+	            }
+	            $("#selected_pdfs").html(file_list);
+	            if(is_not_pdf_file == 'true'){
+	            	alert("pdf 파일만 업로드 가능합니다.");
+	            	upload_ok = 'false';
+	            }
+	            else {
+	            	upload_ok = 'true';
+	            }
+	        });
+
+	      	//$("#class_id_text").val(global_class_id);
+
+	    });
+
+	    $(function(){
+			var s1 = "<br><select style=\"float: left;\">";
+				s1 += "<option value='background-color'>배경색</option>";
+				s1 += "<option value='color'>글자색</option>";
+				s1 += "</select>";
+			$("#memo_edit:first").append(s1);
+			//$("#memo_edit:first").after("<hr>");
+				
+			var s2 = "<input type='color' style=\"width: 1.5vw; height: 1.5vw; float: left;\"/>";
+			$("#memo_edit:first").append(s2);
+
+			var btn = "<input type='button' value='-'/>";
+				btn += "<input type='button' value='0'/>";
+				btn += "<input type='button' value='+'/>";			
+			$("#memo_edit:first").append(btn);
+			
+			$("#memo_edit:first > input[type*='color']").change(function(){
+				var color = $("input[type*='color']").val();
+				var name = $("select").val();
+				$("#memo:last > textarea").css(name, color);
+			});
+			
+			$("#memo_edit:first > input[type*='button']").click(function(){
+				//이벤트가 발생한 버튼의 index 얻어오기
+				var idx = $("input[type*='button']").index(this);
+				//-:작게, 0:원래크기, +:크게
+				if(idx == 0){	//작게
+					var size = parseInt($("#memo:last > textarea").css("font-size")) - 1;	//현재 글자 크기  - 1
+					$("#memo:last > textarea").css("font-size", size + "px");
+				}
+				else if(idx == 1){	//기본크기로 변경
+					$("#memo:last > textarea").css("font-size", "1em");
+				}
+				else if(idx == 2){
+					var size = parseInt($("#memo:last > textarea").css("font-size")) + 1;	//현재 글자 크기 + 1
+					$("#memo:last > textarea").css("font-size", size + "px");
+				}
+			});
+		});
+
+	    function updateData(){
+	    	var content_list = [];
+	    	var name_list = [];
+	    	var date_list = [];
+	    	var class_id_list = [];
+	    	var pk_list = [];
+	    	var ddabong_list = [];
+	    	var user_id_list = [];
+
+	    	var class_user_list = [];
+
+	        $.ajax({
+	          url: '/updateChat/',
+	          data: {
+	          	  "class_id" : global_class_id
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	            //alert(data.chats);
+	            var chat = data.chats;
+	            var chat_tmp = chat;
+
+	            var class_user_list_data = data.class_user_list;
+	            var class_user_list_data_tmp = class_user_list_data;
+
+	            //alert(data.length);
+	            while(chat_tmp.length >0){
+		            var content_idx = chat_tmp.indexOf("content");
+		            if(content_idx == -1){
+		            	break;
+		            }
+		            var content_sub = chat_tmp.substring(content_idx+11, chat_tmp.length);
+
+		            var comma_idx = content_sub.indexOf("\"");
+		            var content = content_sub.substring(0,comma_idx);
+		            //alert(content);
+		            if(content.length > 0){
+		            	content_list.push(content);
+		            }
+		            chat_tmp = content_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var name_idx = chat_tmp.indexOf("user_name");
+		            //alert(name_idx);
+		            if(name_idx == -1){
+		            	break;
+		            }
+		            var name_sub = chat_tmp.substring(name_idx+13, chat_tmp.length);
+
+		            var comma_idx = name_sub.indexOf("\"");
+		            var name = name_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(name.length > 0){
+		            	name_list.push(name);
+		            }
+		            chat_tmp = name_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var date_idx = chat_tmp.indexOf("created_date");
+		            //alert(name_idx);
+		            if(date_idx == -1){
+		            	break;
+		            }
+		            var date_sub = chat_tmp.substring(date_idx+16, chat_tmp.length);
+
+		            var comma_idx = date_sub.indexOf("\"");
+		            var date = date_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(date.length > 0){
+		            	date_list.push(date);
+		            }
+		            chat_tmp = date_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var class_id_idx = chat_tmp.indexOf("class_id");
+		            //alert(name_idx);
+		            if(class_id_idx == -1){
+		            	break;
+		            }
+		            var class_id_sub = chat_tmp.substring(class_id_idx+12, chat_tmp.length);
+
+		            var comma_idx = class_id_sub.indexOf("\"");
+		            var class_id = class_id_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(class_id.length > 0){
+		            	class_id_list.push(class_id);
+		            }
+		            chat_tmp = class_id_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		            var pk_idx = chat_tmp.indexOf("chat_unique_id");
+		            //alert(name_idx);
+		            if(pk_idx == -1){
+		            	break;
+		            }
+		            var pk_sub = chat_tmp.substring(pk_idx+18, chat_tmp.length);
+
+		            var comma_idx = pk_sub.indexOf("\"");
+		            var pk = pk_sub.substring(0,comma_idx);
+		            //alert(name_sub);
+		            if(pk.length > 0){
+		            	pk_list.push(pk);
+		            }
+		            chat_tmp = pk_sub;
+		        }
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		        	//alert(chat_tmp);
+		            var ddabong_idx = chat_tmp.indexOf("ddabong");
+		            //alert(name_idx);
+		            if(ddabong_idx == -1){
+		            	break;
+		            }
+		            var ddabong_sub = chat_tmp.substring(ddabong_idx+10, chat_tmp.length);
+
+		            var comma_idx = ddabong_sub.indexOf("}");
+		            var ddabong = ddabong_sub.substring(0,comma_idx);
+		            //alert(ddabong);
+		            if(ddabong.length > 0){
+		            	ddabong_list.push(ddabong);
+		            }
+		            chat_tmp = ddabong_sub;
+		        }
+
+
+		        chat_tmp = chat;
+
+		        while(chat_tmp.length >0){
+		        	//alert(chat_tmp);
+		            var user_id_idx = chat_tmp.indexOf("user_id");
+		            //alert(name_idx);
+		            if(user_id_idx == -1){
+		            	break;
+		            }
+		            var user_id_sub = chat_tmp.substring(user_id_idx+11, chat_tmp.length);
+
+		            var comma_idx = user_id_sub.indexOf("\"");
+		            var user_id = user_id_sub.substring(0,comma_idx);
+		            //alert(ddabong);
+		            if(user_id.length > 0){
+		            	user_id_list.push(user_id);
+		            }
+		            chat_tmp = user_id_sub;
+		        }
+
+		        //alert(user_id_list);
+
+		        //alert(check_ddabong.length);
+
+		        var chat_content = '';
+		        var best_chat_content = '';
+		        for(var i=0;i<content_list.length;i++){
+		        	//alert(class_id_list[i]);
+		        	if(global_class_id == class_id_list[i]){
+			            var start = "<div class=\"chat_div\">";
+			            var content_start = "<div class=\"chat_content_div\" style=\"background-color: #A6A6A6;float: left;\">";
+			            
+			            var chat_content_body = name_list[i] + " : " + content_list[i] + "<br><br>";
+			            /*
+			            <div class="container">
+						  <img src="img_snow_wide.jpg" alt="Snow" style="width:100%;">
+						  <div class="centered">Centered</div>
+						</div>
+			            */
+			            var chat_ddabong_container_start = "<div class=\"ddabong_container\" id=\"";
+			            var chat_ddabong_container_id = class_id_list[i] + "$$$" + name_list[i] + "$$$" + content_list[i] + "$$$" + date_list[i] + "\">";
+			            if(check_ddabong[i] == 0 || check_ddabong.length == 0){
+				            var chat_ddabong1 = "<img class=\"ddabong_img\" src=\"../static/img/heart_icon_off.png\" id=\"";
+				        }
+				        else {
+				        	var chat_ddabong1 = "<img class=\"ddabong_img\" src=\"../static/img/heart_icon_on.png\" id=\"";
+				        }
+			            var chat_ddabong_id = class_id_list[i] + "###" + name_list[i] + "###" + content_list[i] + "###" + date_list[i];
+			            var chat_ddabong2 = "\" style=\"width: 100%;\" onclick=\"ddabong(this);\">";
+
+			            var ddabong_cnt_div_start = "<div class=\"ddabong_div\" style=\"position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);\">";
+			            var ddabong_cnt = ddabong_list[i];
+			            var ddabong_cnt_div_end = "</div>";
+			            var chat_ddabong_container_end = "</div>";
+			            
+
+			            var chat_delete1 = "<img src=\"../static/img/delete_icon.png\" id=\"";
+			            var chat_delete_id = class_id_list[i] + "%%%" + name_list[i] + "%%%" + content_list[i] + "%%%" + date_list[i];
+			            var chat_delete2 = "\" style=\"width: 1vw; height:1vw; margin-left: 1%;\" onclick=\"delete_msg(this);\">";
+
+			            
+			            var content_end = "</div>";
+
+			            var end = "</div>";
+
+			            var chat_ddabong = chat_ddabong_container_start + chat_ddabong_container_id + chat_ddabong1 + chat_ddabong_id + chat_ddabong2 + ddabong_cnt_div_start + ddabong_cnt + ddabong_cnt_div_end + chat_ddabong_container_end;
+			            var chat_delete = chat_delete1 + chat_delete_id + chat_delete2;
+
+			            //alert(user_id);
+
+			            // 본인 채팅 혹은 개설자 입장에서만 삭제버튼 추가
+			            if(global_user_id == user_id_list[i]){
+			            	content_start = "<div class=\"chat_content_div\" style=\"background-color: #D5D5D5; float: right;\">";
+				            chat_content += start + content_start + chat_content_body + chat_ddabong + chat_delete + content_end + end;
+				        }
+				        else{
+				        	if(global_user_id == founder_id){
+				        		var check_answer_div_start = "<img class=\"check_answer_div\" src='../static/img/check_answer_icon.png' style='width: 1vw; height: 1vw; margin-left: 1%;' onclick='check_answer(this);'>";
+				        		//var check_answer_div_end = "</img>";
+				        		var check_answer = check_answer_div_start;
+				        		chat_content += start + content_start + chat_content_body + chat_ddabong + chat_delete + check_answer + content_end + end;
+				        	}
+				        	else{
+					        	chat_content += start + content_start + chat_content_body + chat_ddabong + content_end + end;
+					        }
+				        }
+
+				        // 좋아요 갯수 best_chat_min_ddabong 개 이상만 BEST CHAT에 등록
+				        if(ddabong_list[i] >= best_chat_min_ddabong){
+				        	start = "<div class=\"chat_div\" style=\"height: 35%;\">";
+				        	if(global_user_id == user_id_list[i]){
+				            	best_chat_content += start + content_start + chat_content_body + chat_delete + content_end + end;
+					        }
+					        else{
+					        	if(global_user_id == founder_id){
+					        		var check_answer_div_start = "<img class=\"check_answer_div\" src='../static/img/check_answer_icon.png' style='width: 1vw; height: 1vw; margin-left: 1%;' onclick='check_answer(this);'>";
+					        		//var check_answer_div_end = "</img>";
+					        		var check_answer = check_answer_div_start;
+				        			best_chat_content += start + content_start + chat_content_body + chat_ddabong + chat_delete + check_answer + content_end + end;
+					        	}
+					        	else{
+						        	best_chat_content += start + content_start + chat_content_body + chat_ddabong + content_end + end;
+						        }
+					        }
+				        }
+				    }
+		        }
+
+
+		        if(check_ddabong_list_push == 0){
+			        var img_list = $("#chat_show_id").find('.ddabong_img');
+			        for(var i=0;i<img_list.length;i++){
+			        	check_ddabong.push(0);
+			        }
+			        if(img_list.length > 0){
+			        	check_ddabong_list_push = 1;
+			        }
+			        //alert(img_list);
+			    }
+		        //alert(check_ddabong.length);
+
+
+
+		        // 현재 참여 인원 리스트
+		        var class_user_list_split = class_user_list_data.split(',');
+		        for(var i=0;i<class_user_list_split.length;i++){
+		        	class_user_list_split[i] = class_user_list_split[i].replace('[','');
+		        	class_user_list_split[i] = class_user_list_split[i].split('\'').join('');
+		        	class_user_list_split[i] = class_user_list_split[i].replace(']','');
+		        	//alert(class_user_list_split[i]);
+
+		        	class_user_list.push(class_user_list_split[i]);
+		        }
+		        //alert(class_user_list);
+
+
+		        /*
+				<div class="user_list_node">
+					wnstlr24(심준식)
+				</div>
+		        */
+		        var user_list_content = '';
+		        for(var i=0;i<class_user_list.length;i++){
+		        	//alert(class_user_list[i]);
+		        	var start = "<div class=\"user_list_node\">";
+		        	var user_info = class_user_list[i];
+		        	var end = "</div>";
+
+		        	user_list_content += start + user_info + end;
+		        }
+
+	            $("#chat_show_id").html(chat_content);
+	            $("#best_chat_id").html(best_chat_content);
+	            $("#user_num").html("참여인원 : " + class_user_list_split.length);
+	            $("#show_user_list_content").html(user_list_content);
+	          }
+	        });
+	        setTimeout("updateData()",1000);
+	    }
+
+	    function send_msg(){
+	    	var chat_content = $("#chat_input").val();
+	        $.ajax({
+	          url: '/sendChat/',
+	          data: {
+	          	  'user_id' : global_user_id,
+	          	  'user_name' : user_name,
+	          	  'chat_content' : chat_content,
+	          	  'class_id' : global_class_id,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	$("#chat_input").val("");
+	            //alert("!!!!");
+	          }
+	        });
+	        check_ddabong.push(0);
+	    }
+
+
+
+
+	    function set_user_id(){
+	    	var user_id_tmp = $("#user_id_input").val();
+	    	global_user_id = user_id_tmp;
+	    	alert("user id ok");
+	    }
+
+	    function set_user_name(){
+	    	var user_name_tmp = $("#user_name_input").val();
+	    	user_name = user_name_tmp;
+	    	alert("user name ok");
+	    }
+
+	    function set_class_id(){
+	    	var class_id_tmp = $("#class_id_input").val();
+	    	global_class_id = class_id_tmp;
+	    	alert("class id ok");
+	    }
+
+
+
+
+
+
+
+	    function ddabong(btn){
+	    	var parent = btn.parentNode;
+		    //alert(children[0].src);
+	    	
+	    	var img_src = btn.src.split('/')[btn.src.split('/').length-1].split('.')[0];
+	    	/*
+	    	if(img_src == "heart_icon_off"){
+	    		btn.src = "../static/img/heart_icon_on.png";
+	    		btn.style.color="white";
+	    	}
+	    	else{
+	    		btn.src = "../static/img/heart_icon_off.png";
+	    		btn.style.color="black";
+	    	}
+	    	*/
+
+	    	//var img_list = $(".ddabong_img");
+
+	    	var img_list = $("#chat_show_id").find('.ddabong_img');
+	    	//alert(img_list.length);
+	    	//alert(img_list[0].attr('id'));
+
+	    	//console.log(img_list);
+
+	    	for(var i=0;i<img_list.length;i++){
+	    		//alert(img_list[i].attr("id"));
+	    		if(img_list[i].id == btn.id){
+	    			if(check_ddabong[i] == 0){
+	    				check_ddabong[i] = 1;
+
+	    				var btn_id_split = btn.id.split("###");
+				    	//alert(btn_id_split);
+				    	$.ajax({
+				          url: '/ddabong/',
+				          data: {
+				          	  'class_id' : btn_id_split[0],
+				          	  'user_name' : btn_id_split[1],
+				          	  'content' : btn_id_split[2],
+				          	  'date' : btn_id_split[3],
+				          	  'is_ddabong' : 'no'
+				          },
+				          dataType: 'json',
+				          success: function (data) {
+
+				          }
+				        });
+	    			}
+	    			else if(check_ddabong[i] == 1){
+	    				check_ddabong[i] = 0;
+	    				var btn_id_split = btn.id.split("###");
+				    	//alert(btn_id_split);
+				    	$.ajax({
+				          url: '/ddabong/',
+				          data: {
+				          	  'class_id' : btn_id_split[0],
+				          	  'user_name' : btn_id_split[1],
+				          	  'content' : btn_id_split[2],
+				          	  'date' : btn_id_split[3],
+				          	  'is_ddabong' : 'yes'
+				          },
+				          dataType: 'json',
+				          success: function (data) {
+
+				          }
+				        });
+	    			}
+	    		}
+	    	}
+	    }
+
+
+
+
+
+	    function delete_msg(btn){
+	    	var btn_id = btn.id;
+	    	var btn_id_split = btn_id.split("%%%");
+
+	    	$.ajax({
+	          url: '/delete_msg/',
+	          data: {
+	          	  'class_id' : btn_id_split[0],
+	          	  'user_name' : btn_id_split[1],
+	          	  'content' : btn_id_split[2],
+	          	  'date' : btn_id_split[3]
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	$("#chat_input").val("");
+	            //alert("!!!!");
+	          }
+	        });
+	    }
+
+
+	    function change_pdf(pdf){
+	    	var pdf_url = pdf.id;
+	    	$(".pdf_content").css('background-color','transparent');
+	    	PDFObject.embed(pdf_url, "#viewer_content");
+	    	pdf.style.backgroundColor = '#F2385A';
+	    }
+
+        function check_file_and_submit(){
+        	var file_length = document.getElementById('pdfs').files.length;
+        	if(file_length == 0){
+        		alert("파일을 선택해주세요.");
+        	}
+        	else if(upload_ok == 'true'){
+	        	var p = document.frm;
+	        	p.action = "../joinClass/" + global_class_id;
+	            p.submit();
+	        }
+	        else if(upload_ok == 'false'){
+	        	alert("pdf 파일만 업로드 가능합니다.");
+	        }
+        }
+	    
+	    function show_user_list(){
+	    	//$("#show_user_list_div").css('display', 'block');
+	    	$("#show_user_list_div").fadeIn(500);
+	    }
+
+	    function close_show_user_list(){
+	    	$("#show_user_list_div").fadeOut(500);
+	    }
+
+	    function change_function(function_div){
+	    	var id = function_div.id;
+	    	$(".choice_class").css("background-color", "white");
+	    	$(".choice_class").css("color", "black");
+
+	    	$("#" + id).css("background-color", "#F2385A");
+	    	$("#" + id).css("color", "white");
+
+	    	if(id == 'choice_pdf'){
+	    		$("#memo_div").css("display", "none");
+	    		$("#pdf_div").css("display", "block");
+	    	}
+	    	else {
+	    		$("#pdf_div").css("display", "none");
+	    		$("#memo_div").css("display", "block");
+	    	}
+	    }
+
+	    function go_home(){
+	    	window.location.href = "../../main";
+	    }
+
+	    function open_upload_pdf(){
+	    	$("#upload_pdf_div").fadeIn(500);
+	    }
+
+	    function close_show_upload_pdf(){
+	    	$("#upload_pdf_div").fadeOut(500);
+	    }
+
+
+	    function open_set_name(){
+	    	$("#set_name_div").fadeIn(500);
+	    }
+
+	   	function close_set_name(){
+   	 		$("#set_name_div").fadeOut(500);
+	    }
+
+
+	    var name;
+	    function check_set_name(){
+	    	//alert("!!!!");
+	    	name = $("#set_name_input").val();
+	    	$.ajax({
+	          url: '/check_set_name/',
+	          data: {
+	          	  'user_name' : name
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	//alert(data.result);
+	          	if(data.result == 'success'){
+	          		//alert("가능합니다.");
+	          		$("#result_check_set_name").html("가능합니다.");
+	          		$("#result_check_set_name").css({"color" : "green"});
+	          		$("#set_name_button").css({"background-color" : "#F2385A"});
+	          		$("#set_name_button").removeAttr("disabled");
+	          	}
+	          	else {
+	          		//alert("불가능합니다.");
+	          		$("#result_check_set_name").html("불가능합니다.");
+	          		$("#result_check_set_name").css({"color" : "red"});
+	          		$("#set_name_button").css({"background-color" : "gray"});
+	          		$("#set_name_button").attr("disabled","disabled");
+	          	}
+	          }
+	        });
+	    }
+
+	    function start_chat(){
+	    	$("#set_name_div").fadeOut(500);
+	    	user_name = name;
+	    	$("#send_msg_btn").attr('onclick', 'send_msg();');
+	    	$("#send_msg_btn").html('보내기');
+
+	    	$("#chat_input").attr('placeholder', '');
+	    	$("#chat_input").removeAttr("disabled");
+	    }
+
+	    function save_memo(){
+	    	var memo_content = $("#t1").val();
+	    	//alert(memo_content);
+	    	
+	    	$.ajax({
+	          url: '/save_memo/',
+	          data: {
+	          	  'class_id' : global_class_id,
+	          	  'class_name' : class_name,
+	          	  'user_id' : global_user_id,
+	          	  'founder_id' : founder_id,
+	          	  'memo' : memo_content
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	alert("!!!!!");
+	          }
+	        });
+
+	    }
+
+	    function check_answer(btn){
+	    	var parent = btn.parentNode;
+	    	//alert(parent.id);
+	    	console.log(parent);
+	    	//parent.style.backgroundColor = "red";
+	    }
+
+	    function delete_pdf(btn){
+	    	var parent = btn.parentNode;
+	    	console.log(parent.id);
+
+	    	$.ajax({
+	          url: '/delete_pdf/',
+	          data: {
+	          	  'pdf_url' : parent.id,
+	          	  'class_id' : global_class_id,
+	          },
+	          dataType: 'json',
+	          success: function (data) {
+	          	//alert("!!!!!");
+	          	window.location.reload();
+	          }
+	        });
+	    }
+	</script>
+</body>
+</html>
